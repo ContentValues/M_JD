@@ -79,11 +79,11 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestApi("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion", {
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     api "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
-    testApi "junit:junit:$rootProject.junitVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
     annotationProcessor "com.alibaba:arouter-compiler:$rootProject.arouterCompilerVersion"
     api "com.alibaba:arouter-api:$rootProject.arouterVersion"
     if(project.buildMain as boolean){
