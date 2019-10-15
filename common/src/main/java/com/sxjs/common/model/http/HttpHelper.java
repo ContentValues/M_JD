@@ -18,15 +18,32 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * http helper负责创建ApiService实例
  */
-@Singleton
 public class HttpHelper {
-    private Context context;
+    private static Context mContext;
     private Retrofit mRetrofitClient;
     private HashMap<String, Object> mServiceMap;
 
-    @Inject
+//    static HttpHelper instance = null;
+//
+//
+//    private HttpHelper() {
+//        mServiceMap = new HashMap<>();
+//        initRetrofitClient();
+//    }
+//
+//    public static synchronized HttpHelper newInstance(Context context) {
+//
+//        if (instance == null) {
+//            instance = new HttpHelper();
+//            mContext = context;
+//        }
+//        return instance;
+//    }
+
+
+//    @Inject
     public HttpHelper(Context context) {
-        this.context = context;
+        this.mContext = context;
         mServiceMap = new HashMap<>();
         initRetrofitClient();
     }
@@ -60,7 +77,7 @@ public class HttpHelper {
         OkHttpClient httpClient = new OkHttpClient.Builder()
                 .readTimeout(CommonConfig.HTTP_READ_TIME_OUT, TimeUnit.SECONDS)
                 .connectTimeout(CommonConfig.HTTP_CONNECT_TIME_OUT, TimeUnit.SECONDS)
-                .addInterceptor(new BaseInterceptor<>(null,context))
+                .addInterceptor(new BaseInterceptor<>(null, mContext))
                 .build();
         mRetrofitClient = createRetrofitClient(httpClient);
     }
@@ -74,10 +91,10 @@ public class HttpHelper {
                 .addConverterFactory(GsonConverterFactory.create()).build();
     }
 
-    private <S> S createService(Class<S> serviceClass, OkHttpClient client){
-        if(client == null){
+    private <S> S createService(Class<S> serviceClass, OkHttpClient client) {
+        if (client == null) {
             return mRetrofitClient.create(serviceClass);
-        }else{
+        } else {
             return createRetrofitClient(client).create(serviceClass);
         }
     }

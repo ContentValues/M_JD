@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.sxjs.common.base.rxjava.ErrorDisposableObserver;
 import com.sxjs.jd.MainDataManager;
-import com.sxjs.jd.composition.BasePresenter;
 import com.sxjs.jd.entities.HomeIndex;
 
 import javax.inject.Inject;
@@ -15,7 +14,7 @@ import io.reactivex.observers.DisposableObserver;
  * @author admin
  */
 
-public class HomePresenter extends BasePresenter implements HomeContract.Presenter{
+public class HomePresenter/* extends BasePresenter */implements HomeContract.Presenter{
     private MainDataManager mDataManager;
 
     private HomeContract.View mHomeView;
@@ -28,7 +27,23 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
 
     @Override
     public void getHomeIndexData(int flag) {
-        addDisposabe(mDataManager.getData(new ErrorDisposableObserver<HomeIndex>() {
+//        addDisposabe(mDataManager.getData(new ErrorDisposableObserver<HomeIndex>() {
+//            @Override
+//            public void onNext(HomeIndex homeIndex) {
+//                mHomeView.setHomeIndexData(homeIndex);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                Log.e("TAG", "onError: "+e );
+//                mHomeView.setHomeIndexData(null);
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//            }
+//        },HomeIndex.class, flag == 1 ?"homeindex.txt" : "homeindexevent.txt"));
+        mDataManager.getData(new ErrorDisposableObserver<HomeIndex>() {
             @Override
             public void onNext(HomeIndex homeIndex) {
                 mHomeView.setHomeIndexData(homeIndex);
@@ -43,14 +58,30 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
             @Override
             public void onComplete() {
             }
-        },HomeIndex.class, flag == 1 ?"homeindex.txt" : "homeindexevent.txt"));
+        },HomeIndex.class, flag == 1 ?"homeindex.txt" : "homeindexevent.txt");
     }
 
 
 
     @Override
     public void getRecommendedWares() {
-        addDisposabe(mDataManager.getData(new DisposableObserver<HomeIndex>() {
+//        addDisposabe(mDataManager.getData(new DisposableObserver<HomeIndex>() {
+//            @Override
+//            public void onNext(HomeIndex homeIndex) {
+//                mHomeView.setRecommendedWares(homeIndex);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//
+//            }
+//        },HomeIndex.class, "recommend.txt"));
+        mDataManager.getData(new DisposableObserver<HomeIndex>() {
             @Override
             public void onNext(HomeIndex homeIndex) {
                 mHomeView.setRecommendedWares(homeIndex);
@@ -65,12 +96,28 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
             public void onComplete() {
 
             }
-        },HomeIndex.class, "recommend.txt"));
+        },HomeIndex.class, "recommend.txt");
     }
 
     @Override
     public void getMoreRecommendedWares() {
-        addDisposabe(mDataManager.getData(new DisposableObserver<HomeIndex>() {
+//        addDisposabe(mDataManager.getData(new DisposableObserver<HomeIndex>() {
+//            @Override
+//            public void onNext(HomeIndex homeIndex) {
+//                mHomeView.setMoreRecommendedWares(homeIndex);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//
+//            }
+//        },HomeIndex.class, "recommended.txt"));
+        mDataManager.getData(new DisposableObserver<HomeIndex>() {
             @Override
             public void onNext(HomeIndex homeIndex) {
                 mHomeView.setMoreRecommendedWares(homeIndex);
@@ -85,6 +132,6 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
             public void onComplete() {
 
             }
-        },HomeIndex.class, "recommended.txt"));
+        },HomeIndex.class, "recommended.txt");
     }
 }

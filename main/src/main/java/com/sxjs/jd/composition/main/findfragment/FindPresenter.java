@@ -5,7 +5,6 @@ import com.sxjs.jd.MainDataManager;
 import com.sxjs.jd.composition.BasePresenter;
 import com.sxjs.jd.entities.FindsBean;
 
-import javax.inject.Inject;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -17,11 +16,11 @@ public class FindPresenter extends BasePresenter implements FindContract.Present
     private MainDataManager mDataManager;
 
     private FindContract.View mFindView;
-    @Inject
+
+
     public FindPresenter(MainDataManager mDataManager, FindContract.View view) {
         this.mDataManager = mDataManager;
         this.mFindView = view;
-
     }
 
 

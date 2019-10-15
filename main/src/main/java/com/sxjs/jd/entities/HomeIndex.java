@@ -86,7 +86,6 @@ public class HomeIndex  {
         }
 
         public int getSpanSize() {
-
             if("recommended_ware".equals(itemType)){
                 return 2;
             }

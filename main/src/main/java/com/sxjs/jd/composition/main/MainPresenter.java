@@ -19,7 +19,7 @@ import okhttp3.ResponseBody;
 * Created by admin on 2017/03/12
 */
 
-public class MainPresenter extends BasePresenter implements MainContract.Presenter{
+public class MainPresenter /*extends BasePresenter*/ implements MainContract.Presenter{
     private MainDataManager mDataManager;
 
     private MainContract.View mMainView;
@@ -58,16 +58,16 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
                 mMainView.hiddenProgressDialogView();
             }
         });
-        addDisposabe(disposable);
+//        addDisposabe(disposable);
 
     }
 
-    @Override
-    public void destory() {
-        if(disposables != null){
-            disposables.clear();
-        }
-    }
+//    @Override
+//    public void destory() {
+//        if(disposables != null){
+//            disposables.clear();
+//        }
+//    }
 
     @Override
     public void saveData() {

@@ -8,10 +8,10 @@ import javax.inject.Singleton;
 /**
  * Created by admin on 2017/3/10.
  */
-@Singleton
+//@Singleton
 public class DataBaseHelper {
     private Context context;
-    @Inject
+//    @Inject
     public DataBaseHelper(Context context) {
         this.context = context;
     }

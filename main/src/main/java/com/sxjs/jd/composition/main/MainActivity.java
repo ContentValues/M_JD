@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
 @Route(path = "/main/MainActivity")
 public class MainActivity extends BaseActivity implements MainContract.View, BottomNavigationBar.OnTabSelectedListener {
 
-    @Inject
     MainPresenter presenter;
     @BindView(R2.id.bottom_navigation_bar1)
     BottomNavigationBar bottomNavigationBar;
@@ -58,35 +57,40 @@ public class MainActivity extends BaseActivity implements MainContract.View, Bot
         mFindFragment = (FindFragment) mFragmentManager.findFragmentByTag("find_fg");
         mMyFragment = (MyFragment) mFragmentManager.findFragmentByTag("my_fg");
 
-        if(mMainHomeFragment == null){
+        if (mMainHomeFragment == null) {
             mMainHomeFragment = MainHomeFragment.newInstance();
-            addFragment(R.id.main_container, mMainHomeFragment, "home_fg");
+//            addFragment(R.id.main_container, mMainHomeFragment, "home_fg");
         }
-        if(mClassificationFragment == null){
+        if (mClassificationFragment == null) {
             mClassificationFragment = ClassificationFragment.newInstance();
-            addFragment(R.id.main_container, mClassificationFragment, "class_fg");
+//            addFragment(R.id.main_container, mClassificationFragment, "class_fg");
         }
 
-        if(mFindFragment == null){
+        if (mFindFragment == null) {
             mFindFragment = FindFragment.newInstance();
-            addFragment(R.id.main_container, mFindFragment, "find_fg");
+//            addFragment(R.id.main_container, mFindFragment, "find_fg");
         }
 
-        if(mMyFragment == null){
+        if (mMyFragment == null) {
             mMyFragment = MyFragment.newInstance();
-            addFragment(R.id.main_container, mMyFragment, "my_fg");
+//            addFragment(R.id.main_container, mMyFragment, "my_fg");
         }
 
-        mFragmentManager.beginTransaction().show(mMainHomeFragment).hide(mClassificationFragment)
-                .hide(mFindFragment)
-                .hide(mMyFragment)
-                .commitAllowingStateLoss();
+        mFragmentManager.beginTransaction().replace(R.id.main_container, mMainHomeFragment).commitAllowingStateLoss();
+//                .show(mMainHomeFragment).hide(mClassificationFragment)
+//                .hide(mFindFragment)
+//                .hide(mMyFragment)
+//                .commitAllowingStateLoss();
 
-        DaggerMainActivityComponent.builder()
-                .appComponent(getAppComponent())
-                .mainPresenterModule(new MainPresenterModule(this, MainDataManager.getInstance(mDataManager)))
-                .build()
-                .inject(this);
+//        DaggerMainActivityComponent.builder()
+//                .appComponent(getAppComponent())
+//                .mainPresenterModule(new MainPresenterModule(this, MainDataManager.getInstance(mDataManager)))
+//                .build()
+//                .inject(this);
+
+        //todo MainDataManager根本没有存在的必要啊 mDataManager可以操作所有的事情 现在封装只是脱裤子放屁多此一举
+        presenter = new MainPresenter(MainDataManager.getInstance(mDataManager), this);
+
         initBottomNavigation();
 
     }
@@ -143,7 +147,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Bot
     }
 
 
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -163,36 +166,35 @@ public class MainActivity extends BaseActivity implements MainContract.View, Bot
 
     @Override
     public void onTabSelected(int position) {
-        if(position == 0){
-            mFragmentManager.beginTransaction()
-                    .hide(mFindFragment)
-                    .hide(mClassificationFragment)
-                    .hide(mMyFragment)
-                    .show(mMainHomeFragment)
-                    .commitAllowingStateLoss();
-        }
-        else if(position == 1){
-            mFragmentManager.beginTransaction()
-                    .hide(mFindFragment)
-                    .hide(mMainHomeFragment)
-                    .hide(mMyFragment)
-                    .show(mClassificationFragment)
-                    .commitAllowingStateLoss();
-        }
-        else if(position == 2){
-            mFragmentManager.beginTransaction()
-                    .hide(mClassificationFragment)
-                    .hide(mMainHomeFragment)
-                    .hide(mMyFragment)
-                    .show(mFindFragment)
-                    .commitAllowingStateLoss();
-        }else if(position == 4){
-            mFragmentManager.beginTransaction()
-                    .hide(mClassificationFragment)
-                    .hide(mMainHomeFragment)
-                    .hide(mFindFragment)
-                    .show(mMyFragment)
-                    .commitAllowingStateLoss();
+        //todo 每次选择tab mMainHomeFragment 走到了ondestory 但是mMainHomeFragment != null  会重新走oAttach生命周期
+        if (position == 0) {
+            mFragmentManager.beginTransaction().replace(R.id.main_container, mMainHomeFragment).commitAllowingStateLoss();
+//                    .hide(mFindFragment)
+//                    .hide(mClassificationFragment)
+//                    .hide(mMyFragment)
+//                    .show(mMainHomeFragment)
+//                    .commitAllowingStateLoss();
+        } else if (position == 1) {
+            mFragmentManager.beginTransaction().replace(R.id.main_container, mClassificationFragment).commitAllowingStateLoss();
+//                    .hide(mFindFragment)
+//                    .hide(mMainHomeFragment)
+//                    .hide(mMyFragment)
+//                    .show(mClassificationFragment)
+//                    .commitAllowingStateLoss();
+        } else if (position == 2) {
+            mFragmentManager.beginTransaction().replace(R.id.main_container, mFindFragment).commitAllowingStateLoss();
+//                    .hide(mClassificationFragment)
+//                    .hide(mMainHomeFragment)
+//                    .hide(mMyFragment)
+//                    .show(mFindFragment)
+//                    .commitAllowingStateLoss();
+        } else if (position == 4) {
+            mFragmentManager.beginTransaction().replace(R.id.main_container, mMyFragment).commitAllowingStateLoss();
+//                    .hide(mClassificationFragment)
+//                    .hide(mMainHomeFragment)
+//                    .hide(mFindFragment)
+//                    .show(mMyFragment)
+//                    .commitAllowingStateLoss();
         }
     }
 
@@ -211,14 +213,15 @@ public class MainActivity extends BaseActivity implements MainContract.View, Bot
         super.onStart();
 
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (presenter != null) {
-            presenter.destory();
-        }
 
 
-    }
+    //todo 其实完全没有必要 可以直接继承RxLifeclyFragment和生命周期绑定
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if (presenter != null) {
+//            presenter.destory();
+//        }
+//    }
 
 }

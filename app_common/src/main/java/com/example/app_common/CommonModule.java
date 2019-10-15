@@ -1,11 +1,15 @@
 package com.example.app_common;
 
 import android.app.Application;
+import android.os.Handler;
+import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 import com.sxjs.common.GlobalAppComponent;
+import com.sxjs.common.widget.percentlayout.BuildConfig;
+
 
 /**
  * @author liuxiaodong
@@ -13,12 +17,15 @@ import com.sxjs.common.GlobalAppComponent;
  * @description
  */
 public class CommonModule {
-    public static void init(Application application){
+    public static void init(final Application application) {
 
         if (LeakCanary.isInAnalyzerProcess(application)) {
             return;
         }
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
+
+            Log.d("BuildConfig", "BuildConfig.DEBUG触发了行为");
+
             LeakCanary.install(application);
             ARouter.openLog();     // 打印日志
             ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
@@ -27,10 +34,12 @@ public class CommonModule {
         ARouter.init(application);
         //CrashReport.initCrashReport(getApplicationContext(), "93f0e37549", CommonConfig.DEBUG);
         Fresco.initialize(application);
+
         GlobalAppComponent.init(application);
 
+
         //平行module初始化
-        ARouter.getInstance().build("/MainModule/MainModule").navigation();
-        ARouter.getInstance().build("/TestModule/TestModule").navigation();
+//        ARouter.getInstance().build("/MainModule/MainModule").navigation();
+//        ARouter.getInstance().build("/TestModule/TestModule").navigation();
     }
 }

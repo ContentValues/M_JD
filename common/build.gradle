@@ -44,8 +44,8 @@ dependencies {
     api "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     api "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
     //dagger
-//    api "com.google.dagger:dagger:$rootProject.daggerVersion"
-//    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    api "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
     //ButterKnife
     api "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"

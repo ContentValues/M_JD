@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sxjs.common.GlobalAppComponent;
 import com.sxjs.common.base.baseadapter.BaseQuickAdapter;
 import com.sxjs.common.widget.headerview.JDHeaderView;
 import com.sxjs.common.widget.pulltorefresh.PtrFrameLayout;
@@ -19,8 +18,6 @@ import com.sxjs.common.base.BaseFragment;
 import com.sxjs.jd.R2;
 import com.sxjs.jd.entities.FindsBean;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -28,7 +25,6 @@ import butterknife.ButterKnife;
  * @author admin
  */
 public class FindFragment extends BaseFragment implements FindContract.View, PtrHandler, BaseQuickAdapter.RequestLoadMoreListener {
-    @Inject
     FindPresenter mPresenter;
     @BindView(R2.id.find_recyclerview)
     RecyclerView findRecyclerview;
@@ -53,11 +49,13 @@ public class FindFragment extends BaseFragment implements FindContract.View, Ptr
 
     public void initView() {
 
-        DaggerFindFragmentComponent.builder()
-                .appComponent(getAppComponent())
-                .findPresenterModule(new FindPresenterModule(this, MainDataManager.getInstance(mDataManager)))
-                .build()
-                .inject(this);
+//        DaggerFindFragmentComponent.builder()
+//                .appComponent(getAppComponent())
+//                .findPresenterModule(new FindPresenterModule(this, MainDataManager.getInstance(mDataManager)))
+//                .build()
+//                .inject(this);
+
+        mPresenter = new FindPresenter(MainDataManager.getInstance(mDataManager),this);
 
         findPullRefreshHeader.setPtrHandler(this);
         findRecyclerview.setLayoutManager(new LinearLayoutManager(mActivity));

@@ -25,8 +25,12 @@ public class DataManager {
 
     private Context context;
 
+     //todo 本来应该写成单例
+//    private DataManager(){
+//
+//    }
 
-    @Inject
+
     public DataManager( Context context ,HttpHelper httpHelper , SharePreferenceHelper sharePreferenceHelper
         , DataBaseHelper dataBaseHelper) {
         this.context = context;

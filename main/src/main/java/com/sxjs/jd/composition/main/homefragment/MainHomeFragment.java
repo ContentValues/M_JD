@@ -20,9 +20,6 @@ import com.sxjs.jd.R;
 import com.sxjs.common.base.BaseFragment;
 import com.sxjs.jd.R2;
 import com.sxjs.jd.entities.HomeIndex;
-
-import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -52,7 +49,7 @@ public class MainHomeFragment extends BaseFragment implements JDHeaderView.Refre
      */
     private int flag = 1;
 
-    @Inject
+//    @Inject
     HomePresenter mPresenter;
 
     public static MainHomeFragment newInstance() {
@@ -73,17 +70,19 @@ public class MainHomeFragment extends BaseFragment implements JDHeaderView.Refre
      * 初始化下拉刷新及滚动距离title发生的改变
      */
     private void initBase() {
-        DaggerHomeFragmentComponent.builder()
-                .appComponent(getAppComponent())
-                .homePresenterModule(new HomePresenterModule(this, MainDataManager.getInstance(mDataManager)))
-                .build()
-                .inject(this);
+//        DaggerHomeFragmentComponent.builder()
+//                .appComponent(getAppComponent())
+//                .homePresenterModule(new HomePresenterModule(this, MainDataManager.getInstance(mDataManager)))
+//                .build()
+//                .inject(this);
+
+        mPresenter = new HomePresenter(MainDataManager.getInstance(mDataManager),this);
 
         initPtrFrame();
         recyclerView = (RecyclerView) this.rootView.findViewById(R.id.recyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(recyclerView.getContext(), 4, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtil.dip2px(getContext(),3)));
+//        recyclerView.addItemDecoration(new SpaceItemDecoration(ScreenUtil.dip2px(getContext(),3)));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

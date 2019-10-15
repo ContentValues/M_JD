@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  */
 
 public class ClassificationFragment extends BaseFragment implements ClassificationContract.View, BaseQuickAdapter.OnItemClickListener {
-    @Inject
+
     ClassificationPresenter presenter;
     @BindView(R2.id.scanning_img)
     ImageView scanningImg;
@@ -39,6 +39,12 @@ public class ClassificationFragment extends BaseFragment implements Classificati
     @BindView(R2.id.classic_icon_view)
     RecyclerView classicIconView;
     private TypeOfGoodsNameAdapter adapter;
+
+
+    public static ClassificationFragment newInstance() {
+        ClassificationFragment classificationFragment = new ClassificationFragment();
+        return classificationFragment;
+    }
 
     @Nullable
     @Override
@@ -51,18 +57,19 @@ public class ClassificationFragment extends BaseFragment implements Classificati
 
     }
 
-    public static ClassificationFragment newInstance() {
-        ClassificationFragment classificationFragment = new ClassificationFragment();
-        return classificationFragment;
-    }
+
 
     public void initView() {
 
-        DaggerClassificationFragmentComponent.builder()
-                .appComponent(getAppComponent())
-                .classificationPresenterModule(new ClassificationPresenterModule(this, MainDataManager.getInstance(mDataManager)))
-                .build()
-                .inject(this);
+//        DaggerClassificationFragmentComponent.builder()
+//                .appComponent(getAppComponent())
+//                .classificationPresenterModule(new ClassificationPresenterModule(this, MainDataManager.getInstance(mDataManager)))
+//                .build()
+//                .inject(this);
+
+
+        presenter = new ClassificationPresenter(MainDataManager.getInstance(mDataManager),this);
+
         typeOfGoodsNameView.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.VERTICAL,false));
         adapter = new TypeOfGoodsNameAdapter(R.layout.type_of_goods_name_view_item);
         adapter.setOnItemClickListener(this);

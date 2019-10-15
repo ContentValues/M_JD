@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,9 @@ import com.sxjs.jd.R;
 import com.sxjs.jd.R2;
 import com.sxjs.jd.data.Constant;
 import com.sxjs.jd.entities.HomeIndex;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 
 
 /**
@@ -45,6 +49,7 @@ public class HomeMultipleRecycleAdapter extends BaseMultiItemQuickAdapter<HomeIn
     }
 
     public HomeMultipleRecycleAdapter() {
+
         setSpanSizeLookup(this);
         addItemType(Constant.TYPE_TOP_BANNER, R.layout.homerecycle_item_top_banner);
         addItemType(Constant.TYPE_ICON_LIST, R.layout.homerecycle_item_icon_list);
@@ -68,8 +73,9 @@ public class HomeMultipleRecycleAdapter extends BaseMultiItemQuickAdapter<HomeIn
 
     /**
      * 数据绑定未进行详细的数据验证，在实际使用中不可取
-     * @param helper A fully initialized helper.
-     * @param item   The item that needs to be displayed.
+     *
+     * @param helper   A fully initialized helper.
+     * @param item     The item that needs to be displayed.
      * @param position
      */
     @Override
@@ -322,6 +328,7 @@ public class HomeMultipleRecycleAdapter extends BaseMultiItemQuickAdapter<HomeIn
         timer = new CountDownTimer(Long.parseLong(time), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+
                 long temp = millisUntilFinished / 1000;
                 long hours = temp / 3600;
                 long minutes = (temp - (3600 * hours)) / 60;
@@ -462,6 +469,7 @@ public class HomeMultipleRecycleAdapter extends BaseMultiItemQuickAdapter<HomeIn
 
     @Override
     public int getSpanSize(GridLayoutManager gridLayoutManager, int position) {
+        //todo spanCount/spanSize = 每行的item数量
         return mData.get(position).getSpanSize();
     }
 
@@ -469,7 +477,7 @@ public class HomeMultipleRecycleAdapter extends BaseMultiItemQuickAdapter<HomeIn
     @Override
     public boolean onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         int id = view.getId();
-        if(id == R.id.icon_list_one){
+        if (id == R.id.icon_list_one) {
             ARouter.getInstance().build("/test1/activity").navigation(view.getContext());
         }
         return false;
